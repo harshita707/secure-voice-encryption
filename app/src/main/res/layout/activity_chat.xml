@@ -25,6 +25,15 @@
             android:layout_weight="4"
             android:id="@+id/et_Message"/>
 
+        <ImageView
+            android:id="@+id/speak"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackground"
+            android:src="@android:drawable/ic_btn_speak_now"/>
+
         <Button
             android:id="@+id/btn_send"
             android:text="send"
