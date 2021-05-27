@@ -1,5 +1,6 @@
 package com.application.chatroomsv2;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.application.chatroomsv2.AES.AES;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import com.application.chatroomsv2.AES.AES_Main;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -72,10 +75,14 @@ public class ChatActivity extends AppCompatActivity {
 
                 DatabaseReference dbr2 = dbr.child(user_msg_key);
                 Map<String, Object> map2 = new HashMap<String , Object>();
-                map2.put("msg", etMsg.getText().toString());
+
+                String msg = etMsg.getText().toString();
+                msg = AES_Main.encryptMessage(msg,SelectedRoom );
+                map2.put("msg", msg);
                 map2.put("user", UserName);
                 dbr2.updateChildren(map2);
 
+                etMsg.setText("");
             }
         });
 
@@ -135,6 +142,8 @@ public class ChatActivity extends AppCompatActivity {
         while(i.hasNext()){
             msg = (String)((DataSnapshot)i.next()).getValue();
             user = (String)((DataSnapshot)i.next()).getValue();
+
+            msg = AES_Main.decryptMessage(msg,SelectedRoom);
 
             conversation = user + ": " + msg;
             arrayAdapter.add(conversation);
